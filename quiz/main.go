@@ -31,15 +31,16 @@ func main() {
 	}
 	problems := parseLines(lines)
 
+	correct := 0
 	for i, p := range problems {
-		fmt.Printf("Problem #%d: %s = \n", i+1, p.q)
-
+		fmt.Printf("Problem #%d: %s = ", i+1, p.q)
 		var answer string
 		fmt.Scanf("%s\n", &answer)
 		if answer == p.a {
-			fmt.Println("Correct!")
+			correct++
 		}
 	}
+	fmt.Printf("You scored %d out of %d.\n", correct, len(problems))
 }
 
 type problem struct {
