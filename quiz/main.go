@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	// helper flag berguna untuk user yg ingin mengetahui cara pemakaiannya dgn flag '-h'
+	// agar bisa digunakan deklarasikan variabel ke 'flag.String("tipe file", "default nama file", "deskripsi")'
 	csvFileName := flag.String("csv", "problems.csv", "a csv file in the format of 'question,answer'")
 	flag.Parse()
 
