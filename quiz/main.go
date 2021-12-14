@@ -8,28 +8,45 @@ import (
 )
 
 func main() {
-	// helper flag berguna untuk user yg ingin mengetahui cara pemakaiannya dgn flag '-h'
-	// agar bisa digunakan deklarasikan variabel ke 'flag.String("tipe file", "default nama file", "deskripsi")'
+	// Make a helper flag for user guides in examples '-h' or ''--help'
+	// Define flag '-csv' using 'flag.String("helper name", "default file you want to call", "flag description")'
 	csvFileName := flag.String("csv", "problems.csv", "a csv file in the format of 'question,answer'")
 
 	// Add this after all flags are defined and before flags are accessed by the program.
 	flag.Parse()
 
-	// open file and handle if there's an error
+	// open file and handle if there's an error, in example file not found or miss typing
 	file, err := os.Open(*csvFileName)
 	if err != nil {
-		// If the file error or not found, terminates/close the program immediately
+		// If the file error or not found, immediately terminates or close the program
 		exit(fmt.Sprintf("Failed to open the csv file: %s\n", *csvFileName))
 	}
-	// read file in format csv
+	// read file in csv format
 	r := csv.NewReader(file)
 	// read all lines and handle if there's an error
 	lines, err := r.ReadAll()
 	if err != nil {
+		// If the file error or not found, immediately terminates or close the program
 		exit("Failed to parsed the provided csv file.")
 	}
 	// print the lines
 	fmt.Println(lines)
+}
+
+type problem struct {
+	q string
+	a string
+}
+
+func parseLines(lines [][]string) []problem {
+	ret := make([]problem, len(lines))
+	for i, line := range lines {
+		ret[i] = problem{
+			q: line[0],
+			a: line[1],
+		}
+	}
+	return ret
 }
 
 func exit(msg string) {
