@@ -35,15 +35,23 @@ func main() {
 
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 	correct := 0
+
+problemLoop:
 	for i, p := range problems {
-		select {
-		case <-timer.C:
-			fmt.Printf("You scored %d out of %d.\n", correct, len(problems))
-			return
-		default:
-			fmt.Printf("Problem #%d: %s = ", i+1, p.q)
+		fmt.Printf("Problem #%d: %s = ", i+1, p.q)
+
+		answerCh := make(chan string)
+		go func() {
 			var answer string
 			fmt.Scanf("%s\n", &answer)
+			answerCh <- answer
+		}()
+
+		select {
+		case <-timer.C:
+			fmt.Println()
+			break problemLoop
+		case answer := <-answerCh:
 			if answer == p.a {
 				correct++
 			}
