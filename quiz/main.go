@@ -36,7 +36,7 @@ func main() {
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 	correct := 0
 
-problemLoop:
+quizloop:
 	for i, p := range problems {
 		fmt.Printf("Problem #%d: %s = ", i+1, p.q)
 
@@ -50,7 +50,7 @@ problemLoop:
 		select {
 		case <-timer.C:
 			fmt.Println()
-			break problemLoop
+			break quizloop
 		case answer := <-answerCh:
 			if answer == p.a {
 				correct++
